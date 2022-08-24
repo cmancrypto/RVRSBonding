@@ -75,7 +75,7 @@ contract RVRSBond is Ownable
     * @dev Set new treasury addr
     * @param _treasury is the new recipient of tokenIn
     */
-    function setTreasury (uint256 _treasury) public onlyOwner 
+    function setTreasury (address _treasury) public onlyOwner 
     {
         treasury = _treasury;
     }
@@ -86,10 +86,9 @@ contract RVRSBond is Ownable
     */
     function recoverToken (address _tokenAddr, uint256 _recoverAmt) public onlyOwner 
     {
-       uint256 _tokenBalance = IERC20(_tokenAddr).balanceof(address(this)); 
+       uint256 _tokenBalance = IERC20(_tokenAddr).balanceOf(address(this)); 
        require (_recoverAmt < _tokenBalance,'recoveramt>balance');
        IERC20(_tokenAddr).safeTransfer(address(msg.sender),_recoverAmt);
     }
 }
-
 
