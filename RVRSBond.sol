@@ -13,9 +13,11 @@ contract RVRSBond is Ownable
     IERC20 public tokenOut;
     //treasury receives tokenIn 
     address public treasury; 
-    //exchange Rate = (tokenOut/tokenIn)*10^12 - padded with precision to allow non-integer exchange rates
+    //exchange Rate = ((#tokenOut*10^tokenOutDecimals)/(#tokenIn*10^tokenInDecimals))*precision
+    //padded with precision to allow non-integer exchange rates
+    //ensure that different decimals are taken into account 
     uint256 public exchangeRate; 
-    uint256 public precision = 10e12; 
+    uint256 public precision = 1e12; 
 
     /**
     *Event for logging bonding 
@@ -29,7 +31,7 @@ contract RVRSBond is Ownable
     * @param _tokenInAddr address of token to receive
     * @param _tokenOutAddr address of token to distribute
     * @param _treasury address of beneficiary for tokenIn
-    * @param _exchangeRate (tokenOut/tokenIn)*10^12
+    * @param _exchangeRate (tokenOut/tokenIn)*precision
      */
     constructor(
         address _tokenInAddr, 
@@ -64,7 +66,7 @@ contract RVRSBond is Ownable
 
     /** 
     *@dev Set new exchange rate 
-    * @param _exchangeRate = (tokenOut/tokenIn)*10^12
+    * @param _exchangeRate = (tokenOut/tokenIn)*precision
     */
     function setExchangeRate (uint256 _exchangeRate) public onlyOwner 
     {
